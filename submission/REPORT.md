@@ -8,7 +8,7 @@
 - **MSSV:** 2A202602455
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/LonelyStar05/K4-L3A-Day13-NguyenTuTai-2A202602455-Monitoring-LLMOps
-- **Commit SHA cuối:** 88d5c91984c904285a872c4d4bb4f5505c042b77
+- **Commit SHA cuối:** 2132614c9988a9890e7d41e88f8bfe4e85dea496
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1` (chạy khi Lab Coach release `config/challenge.json`)
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602455`
 
