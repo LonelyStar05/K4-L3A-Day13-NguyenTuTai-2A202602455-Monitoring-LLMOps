@@ -9,7 +9,7 @@
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/LonelyStar05/K4-L3A-Day13-NguyenTuTai-2A202602455-Monitoring-LLMOps
 - **Commit SHA cuối:** 2132614c9988a9890e7d41e88f8bfe4e85dea496
-- **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1` (chạy khi Lab Coach release `config/challenge.json`)
+- **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602455`
 
 ## 2. Evidence index
@@ -42,7 +42,7 @@
 | `pytest` | 22 pass | 24 pass | thêm test CCCD + credit card |
 | Số traces hợp lệ | 0 | 14 | 14 traces tự tạo, đủ 10 theo rubric |
 | Số PII leak | >0 (baseline) | 0 | email/phone/CCCD/thẻ đều bị scrub |
-| Latency P95 / TTFT P95 | ~151ms / 50ms | 3568ms (request chậm) / 50ms khi bật `rag_slow` | incident practice làm tail latency vượt SLO 3000ms |
+| Latency P95 / TTFT P95 | ~151ms / 50ms | 3551ms (challenge `rag_slow`) / 50ms | tail latency vượt ngưỡng challenge 2000ms và SLO 3000ms |
 | Retrieval success rate | 100% | 100% (chưa bật `tool_fail`) | — |
 
 ## 4. Logging và PII
@@ -76,16 +76,14 @@
 
 ## 7. Điều tra challenge
 
-- **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1` (đây là practice `--scenario rag_slow`; challenge chính thức sẽ dùng `config/challenge.json` do Lab Coach gửi riêng tại CP3).
-- **Khoảng thời gian điều tra:** run lúc 08:06:29–08:06:33 UTC, khi bật incident `rag_slow` (`evidence/12-incident-metric.txt`).
-- **Triệu chứng từ metrics:** Basline latency P95 ~151ms; khi `rag_slow` bật, request latency vọt lên 3568ms (vượt SLO 3000ms), TTFT vẫn 50ms → triệu chứng chậm do xử lý trước khi sinh token, không phải token đầu tiên.
-- **Log line và correlation ID liên quan:** `evidence/13-incident-log.txt` chứa `correlation_id` `req-127a5cca`, `latency_ms: 3568`.
-- **Trace ID và span gây ảnh hưởng:** trace `26200cde04c8a84f0ef579f9439407a1` — span `retrieve-documents` (RETRIEVER) mất 2501ms trong khi `fake-llm-generate` (GENERATION) chỉ 152ms (`evidence/14-incident-trace.png`).
-- **Root cause:** scenario `rag_slow` làm `retrieve()` ngủ 2.5s; span retrieval là thủ phạm, không phải LLM.
-- **Fix action:** tắt `rag_slow`; với sự cố thật sẽ khoanh vùng vector store, thêm timeout/fallback.
-- **Preventive measure:** bám sát tail latency qua SLO `high_tail_latency` (P95 > 3000ms), ăn khớp error budget.
-
-Lưu ý: đây là chuỗi điều tra practice hoàn chỉnh metric → log → trace; chưa chạy challenge chính thức vì `config/challenge.json` chưa được Coach release cho lớp K4-L3A.
+- **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1` (cohort `K4`, seed `1311`, `affected_feature=monitoring`, `latency_threshold_ms=2000`).
+- **Khoảng thời gian điều tra:** args challenge chạy lúc 09:48:16–09:48:42 UTC, sau khi `inject_incident.py` bật incident từ `config/challenge.json`.
+- **Triệu chứng từ metrics:** `/metrics` sau challenge báo `latency_p50=2652ms`, `latency_p95=3551ms`, `latency_p99=3551ms`, `ttft_p95=50ms`; latency vượt ngưỡng challenge `2000ms` và SLO `3000ms`, trong khi TTFT không đổi → chậm xảy ra trước khi sinh token đầu tiên.
+- **Log line và correlation ID liên quan:** `evidence/13-incident-log.txt` chứa `correlation_id` `req-f3870d1e`, `latency_ms: 3551`.
+- **Trace ID và span gây ảnh hưởng:** trace `532d51dbc043dc4c661d51c2557a0012` — span `retrieve-documents` (RETRIEVER) mất 2500ms trong khi `fake-llm-generate` (GENERATION) chỉ 151ms (`evidence/14-incident-trace.png`).
+- **Root cause:** incident `rag_slow` (từ challenge file) làm `retrieve()` giữ 2.5s → span retrieval là span chậm, không phải LLM.
+- **Fix action:** disable incident (`python scripts/inject_incident.py --disable`), khoanh vùng vector store và thêm timeout/fallback cho bước retrieval.
+- **Preventive measure:** bám sát tail latency qua SLO `high_tail_latency` (P95 > 3000ms) và error budget, map về `data/logs.jsonl` → trace retrieval trước khi kết luận.
 
 ## 8. Giải thích và tự đánh giá
 
@@ -95,7 +93,7 @@ Lưu ý: đây là chuỗi điều tra practice hoàn chỉnh metric → log →
 - **Cách hiểu luồng Metrics → Logs → Traces:** Metrics chỉ ra triệu chứng và khoảng thời gian; Logs cho correlation_id của request bất thường; Traces cho span chậm/lỗi; ba lớp cùng khớp mới chốt root cause.
 - **Vai trò của prompt version, token/cost, SLO hoặc rollback trong vận hành LLM:** Prompt version giúp truy vết thay đổi chính xác và rollback an toàn về version đang hoạt động; token/cost và SLO dùng để giám sát hiệu suất và chi phí theo ngưỡng thực tế.
 - **Điều quan trọng nhất đã học:** Observability ba lớp metrics/logs/traces giúp điều tra đúng nguyên nhân thay vì đoán.
-- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** Challenge chính thức chưa chạy vì chưa có `config/challenge.json` từ Lab Coach; phần incident trong report là practice `rag_slow`. Screenshot UI Langfuse nên do chính học viên chụp trực tiếp để hiển thị tên project; các file evidence tôi đã lưu bằng API/script tương đương.
+- **Hạn chế hoặc phần chưa hoàn thành, nếu có:** Screenshot UI Langfuse nên do chính học viên chụp trực tiếp để hiển thị tên project; các file evidence đã lưu bằng API/script tương đương.
 
 ## 9. Checklist trước khi nộp
 

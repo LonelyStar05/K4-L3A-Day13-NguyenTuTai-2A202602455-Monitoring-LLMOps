@@ -1,4 +1,5 @@
-Incident log line (request_received + response_sent):
+Incident log (challenge query affected_feature=monitoring):
 
-{"event":"request_received","service":"api","correlation_id":"req-127a5cca","user_id_hash":"67d81bb6d7f6","session_id":"incident-lifecycle","feature":"qa","model":"claude-sonnet-4-5","env":"dev"}
-{"event":"response_sent","service":"api","correlation_id":"req-127a5cca","latency_ms":3568,"ttft_ms":50,"tokens_in":49,"tokens_out":159,"cost_usd":0.002532,"quality_score":0.9,"tool_success":true}
+request_received: {"service":"api","event":"request_received","correlation_id":"req-f3870d1e","user_id_hash":"dc9b2ec8da9d","session_id":"k4-l3a-challenge-s03","feature":"monitoring","model":"claude-sonnet-4-5","env":"dev"}
+
+response_sent: {"service":"api","event":"response_sent","correlation_id":"req-f3870d1e","latency_ms":3551,"ttft_ms":50,"tokens_in":50,"tokens_out":168,"cost_usd":0.00267,"quality_score":0.8,"tool_name":"retrieval","tool_success":true}

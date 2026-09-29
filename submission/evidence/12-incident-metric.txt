@@ -1,10 +1,11 @@
-Incident scenario: rag_slow (practice)
-Time: app run trace for correlation_id req-127a5cca
+Incident challenge: day13-k4-l3a-monitoring-llmops-v1 (K4)
+incident=rag_slow seed=1311 affected_feature=monitoring latency_threshold_ms=2000
+queries=5
 
-While rag_slow enabled:
-- total request latency: 3568 ms (root lab-agent-run)
-- retrieval span: 2501 ms
-- generation span: 152 ms
-- TTFT unaffected (50 ms): slowness happens before token generation.
-
-Baseline (before incident) latency P95: 151 ms; incident P95 > 3000 ms SLO threshold.
+/metrics during challenge:
+- traffic: 5
+- latency_p50: 2652 ms
+- latency_p95: 3551 ms
+- latency_p99: 3551 ms
+- ttft_p95: 50 ms
+=> tail latency P50/P95 vượt ngưỡng SLO 3000ms và threshold challenge 2000ms; TTFT không đổi (chậm xảy ra trước khi sinh token).
