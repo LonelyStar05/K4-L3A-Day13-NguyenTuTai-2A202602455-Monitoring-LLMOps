@@ -1,25 +1,28 @@
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: high_tail_latency
+    severity: critical
+    condition: 'Latency P95 > 3000ms và error budget consumption trên 50%'
+    duration: 5m
     type: symptom-based
     channel: slack
-    owner: TODO
+    sli: primary_slo.fast_successful_requests
+    owner: platform-oncall
     runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: elevated_error_rate
+    severity: warning
+    condition: 'Error rate > 2% hoặc retrieval success rate < 90%'
+    duration: 10m
     type: symptom-based
     channel: slack
-    owner: TODO
+    sli: guardrails.error_rate_pct_max
+    owner: platform-oncall
     runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: low_quality_proxy
+    severity: warning
+    condition: 'Quality score trung bình < 0.75 (proxy)'
+    duration: 15m
     type: symptom-based
     channel: slack
-    owner: TODO
+    sli: guardrails.quality_score_avg_min
+    owner: platform-oncall
     runbook: docs/alerts.md#alert-3

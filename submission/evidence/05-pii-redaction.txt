@@ -1,0 +1,1 @@
+{"service": "api", "payload": {"message_preview": "Email [REDACTED_EMAIL] phone [REDACTED_PHONE_VN] CCCD [REDACTED_CCCD] card [REDA..."}, "event": "request_received", "model": "claude-sonnet-4-5", "correlation_id": "req-d91ae92d", "env": "dev", "user_id_hash": "8fc1b9a78e3b", "session_id": "pii-session", "feature": "qa", "level": "info", "ts": "2026-09-29T08:08:30.767034Z"}

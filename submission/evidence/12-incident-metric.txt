@@ -1,0 +1,10 @@
+Incident scenario: rag_slow (practice)
+Time: app run trace for correlation_id req-127a5cca
+
+While rag_slow enabled:
+- total request latency: 3568 ms (root lab-agent-run)
+- retrieval span: 2501 ms
+- generation span: 152 ms
+- TTFT unaffected (50 ms): slowness happens before token generation.
+
+Baseline (before incident) latency P95: 151 ms; incident P95 > 3000 ms SLO threshold.

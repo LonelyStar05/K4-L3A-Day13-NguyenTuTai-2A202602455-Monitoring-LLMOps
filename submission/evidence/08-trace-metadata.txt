@@ -1,0 +1,10 @@
+trace_id=db8ebe323b51c74199087670a82cbeff
+project=day13-k4-l3a-2A202602455
+root: type=AGENT name=lab-agent-run latency_s=1.219 version=1
+root metadata={"correlation_id": "req-f2076365", "model": "claude-sonnet-4-5", "feature": "qa", "prompt_fetch_error": "", "prompt_source": "langfuse", "prompt_version": 1, "prompt_label": "production", "prompt_name": "day13-chat", "query_preview": "Explain how observability ties metrics logs and traces together", "doc_count": 1}
+retriever: type=RETRIEVER name=retrieve-documents latency_s=0.0
+generation: type=GENERATION name=fake-llm-generate latency_s=0.151
+generation model=claude-sonnet-4-5
+generation usage_details={"prompt_tokens": 51, "completion_tokens": 157, "total": 208}
+generation cost_details={"total": 0.002508}
+generation total_cost=0.002508

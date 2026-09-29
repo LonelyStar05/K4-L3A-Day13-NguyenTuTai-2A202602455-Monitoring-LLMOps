@@ -7,7 +7,11 @@ primary_slo:
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  note: >
+    Baseline practice trên workload concurrency=5 có latency P95 ~157ms và TTFT P95 ~50ms,
+    thấp hơn rất nhiều ngưỡng 3000ms, nên giữ mục tiêu 99.5% các request hoàn thành dưới 3s.
+    Error budget = 100% - 99.5% = 0.5% request; trong cửa sổ 28 ngày, nếu tổng request là N
+    thì được phép tối đa 0.005 * N request vi phạm ngưỡng latency mà vẫn giữ SLO.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5

@@ -1,0 +1,8 @@
+Incident trace evidence (scenario: rag_slow practice)
+trace_id=26200cde04c8a84f0ef579f9439407a1
+correlation_id=req-127a5cca
+--- span timeline ---
+AGENT lab-agent-run: 3569ms
+RETRIEVER retrieve-documents: 2501ms
+GENERATION fake-llm-generate: 152ms
+Root cause: RETRIEVER retrieve-documents spent 2500ms (rag_slow sleep); generation only 152ms.

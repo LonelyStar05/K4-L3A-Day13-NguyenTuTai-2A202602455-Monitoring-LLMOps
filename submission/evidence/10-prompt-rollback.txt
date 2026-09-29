@@ -1,0 +1,8 @@
+Prompt promote/rollback evidence (production label)
+Step 1: created v1 with labels [baseline, production]
+Step 2: created v2 with label [candidate]
+Step 3: ran candidate request -> trace 0e0aca6e81a8ede253a3c96334082087 (v2, candidate)
+Step 4: promote production -> v2 (scripts/setup_prompts.py promote --version 2)
+Step 5: ran production request -> trace 312469840e6d4efef3d711f318dcf3da (v2, production)
+Step 6: rollback production -> v1 (scripts/setup_prompts.py rollback --version 1)
+Step 7: ran production request -> trace db8ebe323b51c74199087670a82cbeff (v1, production)

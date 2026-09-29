@@ -1,0 +1,17 @@
+Personal project: day13-k4-l3a-2A202602455
+Total root traces: 14
+
+1. trace_id=7dd0f2868b974d38f6a9d14d8147cdc8 name=lab-agent-run start=2026-09-29T08:01:44.747000+00:00 latency_s=1.127 session=s03 corr=req-4409720c prompt=day13-chat/v1/production
+2. trace_id=e773b498f961749a95457b6b795653a5 name=lab-agent-run start=2026-09-29T08:01:45.876000+00:00 latency_s=0.151 session=s01 corr=req-9a554f13 prompt=day13-chat/v1/production
+3. trace_id=08fefe231ca40055e0bf73e2e2eb8ac9 name=lab-agent-run start=2026-09-29T08:01:46.029000+00:00 latency_s=0.152 session=s02 corr=req-d890a4ff prompt=day13-chat/v1/production
+4. trace_id=cf975c92347e100e6419a4263a8aec2d name=lab-agent-run start=2026-09-29T08:01:46.185000+00:00 latency_s=0.152 session=s04 corr=req-6f8ce670 prompt=day13-chat/v1/production
+5. trace_id=7b25713a5ebd7e0f96d3c4871eea543d name=lab-agent-run start=2026-09-29T08:01:46.341000+00:00 latency_s=0.152 session=s05 corr=req-a466d2ba prompt=day13-chat/v1/production
+6. trace_id=dc67e883c7447fb90b83e9f2e9e1ed3c name=lab-agent-run start=2026-09-29T08:01:46.495000+00:00 latency_s=0.151 session=s06 corr=req-59f49df3 prompt=day13-chat/v1/production
+7. trace_id=d56013cfba4287810a9e7726ce70fc2a name=lab-agent-run start=2026-09-29T08:01:46.650000+00:00 latency_s=0.153 session=s07 corr=req-e937edaa prompt=day13-chat/v1/production
+8. trace_id=78b9ee5bccba071b521d888c11ab6aa3 name=lab-agent-run start=2026-09-29T08:01:46.806000+00:00 latency_s=0.152 session=s08 corr=req-ad213364 prompt=day13-chat/v1/production
+9. trace_id=dc92c7941e6ba8f0894ecba7bf04b2fe name=lab-agent-run start=2026-09-29T08:01:46.959000+00:00 latency_s=0.152 session=s09 corr=req-80099b22 prompt=day13-chat/v1/production
+10. trace_id=3a46ebef1f835aa65efe31e942e1a483 name=lab-agent-run start=2026-09-29T08:01:47.116000+00:00 latency_s=0.153 session=s10 corr=req-85cccfb6 prompt=day13-chat/v1/production
+11. trace_id=0e0aca6e81a8ede253a3c96334082087 name=lab-agent-run start=2026-09-29T08:04:15.726000+00:00 latency_s=1.078 session=prompt-lifecycle corr=req-e5a8d5e3 prompt=day13-chat/v2/candidate
+12. trace_id=312469840e6d4efef3d711f318dcf3da name=lab-agent-run start=2026-09-29T08:04:25.251000+00:00 latency_s=1.106 session=prompt-lifecycle corr=req-da624bc7 prompt=day13-chat/v2/production
+13. trace_id=db8ebe323b51c74199087670a82cbeff name=lab-agent-run start=2026-09-29T08:04:35.827000+00:00 latency_s=1.219 session=prompt-lifecycle corr=req-f2076365 prompt=day13-chat/v1/production
+14. trace_id=26200cde04c8a84f0ef579f9439407a1 name=lab-agent-run start=2026-09-29T08:06:29.942000+00:00 latency_s=3.569 session=incident-lifecycle corr=req-127a5cca prompt=day13-chat/v1/production

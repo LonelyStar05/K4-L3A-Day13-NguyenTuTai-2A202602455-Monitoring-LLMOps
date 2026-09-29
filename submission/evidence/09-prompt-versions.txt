@@ -1,0 +1,18 @@
+Prompt versions in project (from run traces):
+v1 label baseline+production (created first)
+v2 label candidate (created second)
+
+Trace evidence by label/version:
+version=1 label=production correlation=req-4409720c trace=7dd0f2868b974d38f6a9d14d8147cdc8 session=s03 start=2026-09-29T08:01:44.747000+00:00
+version=1 label=production correlation=req-9a554f13 trace=e773b498f961749a95457b6b795653a5 session=s01 start=2026-09-29T08:01:45.876000+00:00
+version=1 label=production correlation=req-d890a4ff trace=08fefe231ca40055e0bf73e2e2eb8ac9 session=s02 start=2026-09-29T08:01:46.029000+00:00
+version=1 label=production correlation=req-6f8ce670 trace=cf975c92347e100e6419a4263a8aec2d session=s04 start=2026-09-29T08:01:46.185000+00:00
+version=1 label=production correlation=req-a466d2ba trace=7b25713a5ebd7e0f96d3c4871eea543d session=s05 start=2026-09-29T08:01:46.341000+00:00
+version=1 label=production correlation=req-59f49df3 trace=dc67e883c7447fb90b83e9f2e9e1ed3c session=s06 start=2026-09-29T08:01:46.495000+00:00
+version=1 label=production correlation=req-e937edaa trace=d56013cfba4287810a9e7726ce70fc2a session=s07 start=2026-09-29T08:01:46.650000+00:00
+version=1 label=production correlation=req-ad213364 trace=78b9ee5bccba071b521d888c11ab6aa3 session=s08 start=2026-09-29T08:01:46.806000+00:00
+version=1 label=production correlation=req-80099b22 trace=dc92c7941e6ba8f0894ecba7bf04b2fe session=s09 start=2026-09-29T08:01:46.959000+00:00
+version=1 label=production correlation=req-85cccfb6 trace=3a46ebef1f835aa65efe31e942e1a483 session=s10 start=2026-09-29T08:01:47.116000+00:00
+version=2 label=candidate correlation=req-e5a8d5e3 trace=0e0aca6e81a8ede253a3c96334082087 session=prompt-lifecycle start=2026-09-29T08:04:15.726000+00:00
+version=2 label=production correlation=req-da624bc7 trace=312469840e6d4efef3d711f318dcf3da session=prompt-lifecycle start=2026-09-29T08:04:25.251000+00:00
+version=1 label=production correlation=req-f2076365 trace=db8ebe323b51c74199087670a82cbeff session=prompt-lifecycle start=2026-09-29T08:04:35.827000+00:00

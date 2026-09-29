@@ -1,0 +1,4 @@
+Incident log line (request_received + response_sent):
+
+{"event":"request_received","service":"api","correlation_id":"req-127a5cca","user_id_hash":"67d81bb6d7f6","session_id":"incident-lifecycle","feature":"qa","model":"claude-sonnet-4-5","env":"dev"}
+{"event":"response_sent","service":"api","correlation_id":"req-127a5cca","latency_ms":3568,"ttft_ms":50,"tokens_in":49,"tokens_out":159,"cost_usd":0.002532,"quality_score":0.9,"tool_success":true}

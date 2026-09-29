@@ -35,6 +35,24 @@ except ImportError:  # pragma: no cover - chỉ dùng khi chưa cài requirement
 def get_langfuse_client():
     return get_client()
 
+@contextmanager
+def start_child_observation(*, client: Any, name: str, as_type: str, **kwargs: Any):
+    """Start a Langfuse v4 child observation when the client supports it.
+
+    Falls back to a no-op context manager when tracing is disabled or the
+    client is a lightweight stub (e.g. in unit tests), so the agent logic
+    remains exactly the same with and without Langfuse.
+    """
+    if not tracing_enabled():
+        yield None
+        return
+    starter = getattr(client, "start_as_current_observation", None)
+    if not callable(starter):
+        yield None
+        return
+    with starter(name=name, as_type=as_type, **kwargs) as child:
+        yield child
+
 
 def tracing_enabled() -> bool:
     return LANGFUSE_SDK_AVAILABLE and bool(

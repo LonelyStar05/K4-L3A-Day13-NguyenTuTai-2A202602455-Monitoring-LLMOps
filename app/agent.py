@@ -9,7 +9,13 @@ from .mock_llm import FakeLLM
 from .mock_rag import retrieve
 from .pii import hash_user_id, summarize_text
 from .prompt_management import resolve_prompt
-from .tracing import get_langfuse_client, observe, propagate_attributes, tracing_enabled
+from .tracing import (
+    get_langfuse_client,
+    observe,
+    propagate_attributes,
+    start_child_observation,
+    tracing_enabled,
+)
 
 
 @dataclass
@@ -37,7 +43,8 @@ class LabAgent:
         message: str,
         correlation_id: str,
     ) -> AgentResult:
-        langfuse_client = get_langfuse_client()
+        tracing = tracing_enabled()
+        langfuse_client = get_langfuse_client() if tracing else None
         with propagate_attributes(
             user_id=hash_user_id(user_id),
             session_id=session_id,
@@ -51,30 +58,66 @@ class LabAgent:
             },
         ):
             started = time.perf_counter()
-            docs = retrieve(message)
+            with start_child_observation(
+                client=langfuse_client,
+                name="retrieve-documents",
+                as_type="retriever",
+                input=summarize_text(message),
+            ) as retrieval_span:
+                docs = retrieve(message)
+                if retrieval_span is not None:
+                    retrieval_span.update(
+                        output={"doc_count": len(docs)},
+                        metadata={"query_preview": summarize_text(message)},
+                    )
             prompt = resolve_prompt(
                 langfuse_client,
                 feature=feature,
                 docs=docs,
                 message=message,
-                enabled=tracing_enabled(),
+                enabled=tracing,
             )
-            langfuse_client.update_current_span(
-                metadata={
-                    "doc_count": len(docs),
-                    "query_preview": summarize_text(message),
-                    "prompt_name": prompt.name,
-                    "prompt_label": prompt.label,
-                    "prompt_version": prompt.version,
-                    "prompt_source": prompt.source,
-                    "prompt_fetch_error": prompt.fetch_error or "",
-                },
-                version=prompt.version,
-            )
-            # TODO (CP2): instrument retrieve() and FakeLLM.generate() as child
-            # observations. The nested generation must receive prompt, usage and cost.
+            if langfuse_client is not None:
+                langfuse_client.update_current_span(
+                    metadata={
+                        "doc_count": len(docs),
+                        "query_preview": summarize_text(message),
+                        "prompt_name": prompt.name,
+                        "prompt_label": prompt.label,
+                        "prompt_version": prompt.version,
+                        "prompt_source": prompt.source,
+                        "prompt_fetch_error": prompt.fetch_error or "",
+                    },
+                    version=prompt.version,
+                )
             with propagate_attributes(prompt=prompt.managed_prompt):
-                response = self.llm.generate(prompt.text)
+                with start_child_observation(
+                    client=langfuse_client,
+                    name="fake-llm-generate",
+                    as_type="generation",
+                    model=self.model,
+                    prompt=prompt.managed_prompt,
+                ) as generation_span:
+                    response = self.llm.generate(prompt.text)
+                    if generation_span is not None:
+                        cost_usd = self._estimate_cost(
+                            response.usage.input_tokens,
+                            response.usage.output_tokens,
+                        )
+                        generation_span.update(
+                            usage_details={
+                                "prompt_tokens": response.usage.input_tokens,
+                                "completion_tokens": response.usage.output_tokens,
+                            },
+                            cost_details={"total": cost_usd},
+                            metadata={
+                                "prompt_name": prompt.name,
+                                "prompt_label": prompt.label,
+                                "prompt_version": prompt.version,
+                                "prompt_source": prompt.source,
+                                "answer_preview": summarize_text(response.text),
+                            },
+                        )
             quality_score = self._heuristic_quality(message, response.text, docs)
             latency_ms = int((time.perf_counter() - started) * 1000)
             cost_usd = self._estimate_cost(response.usage.input_tokens, response.usage.output_tokens)
